@@ -1,0 +1,33 @@
+# ── Backend ──────────────────────────────────────────────
+backend/.env
+backend/studio_wars.db
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/**/*.pyc
+backend/**/*.pyo
+backend/storage/portraits/*
+backend/storage/meshes/*
+!backend/storage/portraits/.gitkeep
+!backend/storage/meshes/.gitkeep
+
+# ── Frontend ─────────────────────────────────────────────
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.env.local
+frontend/.env*.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+
+# ── OS / Editor ───────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
