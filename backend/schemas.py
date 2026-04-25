@@ -48,6 +48,8 @@ class CharacterResponse(BaseModel):
     portrait_url: Optional[str] = None
     glb_url: Optional[str] = None
     glb_status: Optional[str] = None
+    rigged_glb_url: Optional[str] = None
+    rig_status: Optional[str] = None
     status: str
     ai_score: Optional[float] = None
     ai_recommendation: Optional[str] = None

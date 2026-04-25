@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from database import get_db
 from agents.mesh_agent import start_mesh_generation
+from agents.rig_agent import start_rigging
 import models
 import schemas
 
@@ -75,4 +76,29 @@ async def retry_mesh(
     db.commit()
     db.refresh(character)
     background_tasks.add_task(start_mesh_generation, character.id, character.portrait_url)
+    return character
+
+
+@router.post("/{character_id}/retry-rig", response_model=schemas.CharacterResponse)
+async def retry_rig(
+    character_id: int,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
+    character = db.query(models.Character).filter(
+        models.Character.id == character_id
+    ).first()
+    if not character:
+        raise HTTPException(status_code=404, detail="Character not found")
+    if character.status != "approved":
+        raise HTTPException(status_code=400, detail="Character is not approved")
+    if not character.glb_url:
+        raise HTTPException(status_code=400, detail="Character has no GLB — generate mesh first")
+
+    character.rig_status = "rigging"
+    character.rig_error = None
+    character.rigged_glb_url = None
+    db.commit()
+    db.refresh(character)
+    background_tasks.add_task(start_rigging, character.id, character.glb_url)
     return character

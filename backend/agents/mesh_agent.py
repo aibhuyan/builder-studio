@@ -29,6 +29,7 @@ async def submit_mesh_task(portrait_url: str) -> str:
     payload = {
         "image_url": public_url,
         "ai_model": "meshy-6",
+        "rig": True,
     }
     async with httpx.AsyncClient() as client:
         response = await client.post(
@@ -81,6 +82,10 @@ async def start_mesh_generation(character_id: int, portrait_url: str):
                     character.glb_url = local_path
                 character.glb_status = "ready"
                 db.commit()
+                # Chain: kick off rigging once mesh is ready
+                if local_path:
+                    from agents.rig_agent import start_rigging
+                    await start_rigging(character_id, local_path)
                 return
 
             if status == "FAILED":

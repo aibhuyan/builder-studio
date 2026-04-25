@@ -50,6 +50,11 @@ class Character(Base):
     human_decision = Column(String(50))
     human_note = Column(Text)
 
+    # Rigging
+    rigged_glb_url = Column(String(500))
+    rig_status = Column(String(50), default="none")  # none/rigging/ready/failed
+    rig_error = Column(Text)
+
     # Community Voting
     upvotes = Column(Integer, default=0, nullable=False, server_default="0")
     downvotes = Column(Integer, default=0, nullable=False, server_default="0")

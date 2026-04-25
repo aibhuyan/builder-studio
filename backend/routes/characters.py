@@ -197,3 +197,17 @@ def get_glb_status(character_id: int, db: Session = Depends(get_db)):
         "glb_url": character.glb_url,
         "glb_error": character.glb_error,
     }
+
+
+@router.get("/{character_id}/rig-status")
+def get_rig_status(character_id: int, db: Session = Depends(get_db)):
+    character = db.query(models.Character).filter(
+        models.Character.id == character_id
+    ).first()
+    if not character:
+        raise HTTPException(status_code=404, detail="Character not found")
+    return {
+        "rig_status": character.rig_status,
+        "rigged_glb_url": character.rigged_glb_url,
+        "rig_error": character.rig_error,
+    }
