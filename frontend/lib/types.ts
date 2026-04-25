@@ -18,8 +18,6 @@ export interface Character {
   portrait_url: string | null
   glb_url: string | null
   glb_status: string | null
-  rigged_glb_url: string | null
-  rig_status: string | null
   status: string
   ai_score: number | null
   ai_recommendation: string | null

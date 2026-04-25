@@ -3,7 +3,7 @@ import asyncio
 import httpx
 from pathlib import Path
 from dotenv import load_dotenv
-from storage import download_and_save_mesh, upload_to_imgbb
+from storage import download_and_save_mesh
 from database import SessionLocal
 import models
 
@@ -14,20 +14,10 @@ MESHY_BASE_URL = "https://api.meshy.ai/openapi/v1"
 POLL_INTERVAL = 15  # seconds
 MAX_POLLS = 40      # 40 × 15s = 10 min max wait
 
-
-async def get_public_portrait_url(portrait_url: str) -> str:
-    if portrait_url.startswith("http"):
-        return portrait_url
-    local_path = Path(portrait_url.lstrip("/"))
-    image_bytes = local_path.read_bytes()
-    return await upload_to_imgbb(image_bytes)
-
-
 async def submit_mesh_task(portrait_url: str) -> str:
-    public_url = await get_public_portrait_url(portrait_url)
     headers = {"Authorization": f"Bearer {MESHY_API_KEY}"}
     payload = {
-        "image_url": public_url,
+        "image_url": portrait_url,
         "ai_model": "meshy-6",
     }
     async with httpx.AsyncClient() as client:

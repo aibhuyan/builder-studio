@@ -3,7 +3,8 @@ from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from database import get_db, SessionLocal
 from streaming import sse_stage, sse_step, sse_portrait, sse_done, sse_error
-from storage import save_portrait, upload_to_imgbb
+import uuid
+from storage import upload_to_supabase
 import models
 import schemas
 from agents.portrait_agent import generate_portrait
@@ -57,11 +58,8 @@ async def generate_character(data: schemas.CharacterCreate):
             if data.creative_prompt:
                 portrait_context += f". {data.creative_prompt}"
             _, portrait_bytes = await generate_portrait(portrait_context)
-            local_path = save_portrait(portrait_bytes)
-            try:
-                portrait_url = await upload_to_imgbb(portrait_bytes)
-            except Exception:
-                portrait_url = local_path
+            portrait_filename = f"{uuid.uuid4()}.png"
+            portrait_url = await upload_to_supabase("portraits", portrait_filename, portrait_bytes, "image/png")
             char.portrait_url = portrait_url
             db.commit()
             yield sse_portrait(portrait_url)

@@ -19,7 +19,10 @@ export function useVote(
 
   useEffect(() => {
     const stored = localStorage.getItem(storageKey)
-    if (stored === "up" || stored === "down") setCurrentVote(stored)
+    if (stored === "up" || stored === "down") {
+      // Delay state update to avoid cascading renders warning
+      setTimeout(() => setCurrentVote(stored), 0)
+    }
   }, [storageKey])
 
   const vote = useCallback(

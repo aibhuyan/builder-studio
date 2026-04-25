@@ -20,18 +20,6 @@ export async function getGlbStatus(id: number) {
   return res.json()
 }
 
-export async function getRigStatus(id: number) {
-  const res = await fetch(`${BASE_URL}/characters/${id}/rig-status`)
-  if (!res.ok) throw new Error("Failed to fetch rig status")
-  return res.json()
-}
-
-export async function retryRig(id: number): Promise<Character> {
-  const res = await fetch(`${BASE_URL}/admin/${id}/retry-rig`, { method: "POST" })
-  if (!res.ok) throw new Error("Failed to retry rigging")
-  return res.json()
-}
-
 export async function getAdminQueue(): Promise<Character[]> {
   const res = await fetch(`${BASE_URL}/admin/queue`)
   if (!res.ok) throw new Error("Failed to fetch admin queue")
@@ -57,6 +45,7 @@ export async function decideCharacter(
   if (!res.ok) throw new Error("Failed to submit decision")
   return res.json()
 }
+
 
 export interface VoteResult {
   id: number

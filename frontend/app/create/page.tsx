@@ -5,6 +5,7 @@ import { useCharacterStream, TroopFormData } from "@/hooks/use-character-stream"
 import { AgentPipeline } from "@/components/agent-pipeline"
 import { API_BASE } from "@/lib/api"
 import Link from "next/link"
+import Image from "next/image"
 
 const ARCHETYPES = [
   { id: "barbarian", label: "Barbarian", emoji: "🪓", desc: "Fast melee attacker", stats: "High ATK · High SPD" },
@@ -254,16 +255,17 @@ export default function CreatePage() {
         {/* RIGHT — Output */}
         <div className="space-y-4">
           {/* Portrait */}
-          <div className="aspect-square bg-stone-900 border border-stone-800 rounded-xl overflow-hidden flex items-center justify-center">
+          <div className="aspect-square bg-stone-900 border border-stone-800 rounded-xl overflow-hidden flex items-center justify-center relative">
             {state.portraitUrl ? (
-              <img
+              <Image
                 src={
                   state.portraitUrl.startsWith("http") || state.portraitUrl.startsWith("data:")
                     ? state.portraitUrl
                     : `${API_BASE}${state.portraitUrl}`
                 }
                 alt="Troop portrait"
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
             ) : (
               <div className="text-center text-stone-600">

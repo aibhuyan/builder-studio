@@ -39,10 +39,11 @@ export function CharacterCard({ character, onClick, isWinner }: CharacterCardPro
       {/* Portrait */}
       <div className="aspect-square bg-gray-800 relative">
         {portraitSrc ? (
-          <img
+          <Image
             src={portraitSrc}
             alt={character.name ?? "Character"}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-6xl">

@@ -104,8 +104,6 @@ export default function RosterPage() {
                 characterId={selected.id}
                 initialGlbUrl={selected.glb_url}
                 initialGlbStatus={selected.glb_status}
-                initialRiggedGlbUrl={selected.rigged_glb_url}
-                initialRigStatus={selected.rig_status}
               />
             )}
 

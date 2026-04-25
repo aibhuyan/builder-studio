@@ -7,6 +7,7 @@ import { CharacterCard } from "@/components/character-card"
 import { TrustDashboard } from "@/components/trust-dashboard"
 import { AgentPipeline } from "@/components/agent-pipeline"
 import { API_BASE } from "@/lib/api"
+import Image from "next/image"
 
 export default function AdminPage() {
   const [queue, setQueue] = useState<Character[]>([])
@@ -17,17 +18,20 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true)
   const [deciding, setDeciding] = useState(false)
 
-  const loadQueue = () => {
-    setLoading(true)
-    Promise.all([getAdminQueue(), getAllCharacters()])
-      .then(([pending, all]) => {
-        setQueue(pending)
-        setRejected(all.filter((c) => c.status === "rejected"))
-      })
-      .finally(() => setLoading(false))
+  const fetchQueue = async () => {
+    const [pending, all] = await Promise.all([getAdminQueue(), getAllCharacters()])
+    setQueue(pending)
+    setRejected(all.filter((c) => c.status === "rejected"))
   }
 
-  useEffect(() => { loadQueue() }, [])
+  const loadQueue = () => {
+    setLoading(true)
+    fetchQueue().finally(() => setLoading(false))
+  }
+
+  useEffect(() => {
+    fetchQueue().finally(() => setLoading(false))
+  }, [])
 
   const handleDecide = async (decision: "approved" | "rejected") => {
     if (!selected) return
@@ -108,9 +112,11 @@ export default function AdminPage() {
             {rejected.map((c) => (
               <div key={c.id} className="flex items-start gap-4 bg-gray-900 border border-red-900/40 rounded-xl p-4">
                 {c.portrait_url && (
-                  <img
+                  <Image
                     src={c.portrait_url.startsWith("http") ? c.portrait_url : `${API_BASE}${c.portrait_url}`}
                     alt={c.name ?? ""}
+                    width={56}
+                    height={56}
                     className="w-14 h-14 rounded-lg object-cover flex-shrink-0"
                   />
                 )}
@@ -127,11 +133,11 @@ export default function AdminPage() {
                       }`}>🛡 {c.ai_score}</span>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 mt-0.5">Pitch: "{c.pitch}"</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Pitch: &quot;{c.pitch}&quot;</p>
                   {c.human_note && (
                     <div className="mt-2 flex items-start gap-2">
                       <span className="text-red-400 text-xs mt-0.5">✗</span>
-                      <p className="text-sm text-red-300">"{c.human_note}"</p>
+                      <p className="text-sm text-red-300">&quot;{c.human_note}&quot;</p>
                     </div>
                   )}
                 </div>
@@ -140,6 +146,7 @@ export default function AdminPage() {
           </div>
         )
       )}
+
 
       {/* Review modal */}
       {selected && (
@@ -152,7 +159,7 @@ export default function AdminPage() {
               <div>
                 <h2 className="text-2xl font-bold">{selected.emoji} {selected.name}</h2>
                 <p className="text-gray-400 text-sm mt-0.5">
-                  {selected.archetype} · {selected.rarity} {selected.type} · Pitch: "{selected.pitch}"
+                  {selected.archetype} · {selected.rarity} {selected.type} · Pitch: &quot;{selected.pitch}&quot;
                 </p>
               </div>
               <button onClick={() => setSelected(null)} className="text-gray-600 hover:text-white text-xl ml-4">✕</button>
@@ -162,9 +169,11 @@ export default function AdminPage() {
               {/* Left: portrait + stats */}
               <div className="space-y-4">
                 {selected.portrait_url && (
-                  <img
+                  <Image
                     src={selected.portrait_url.startsWith("http") || selected.portrait_url.startsWith("data:") ? selected.portrait_url : `${API_BASE}${selected.portrait_url}`}
                     alt={selected.name ?? "Character"}
+                    width={400}
+                    height={400}
                     className="w-full rounded-xl object-cover aspect-square"
                   />
                 )}

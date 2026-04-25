@@ -1,42 +1,44 @@
 import os
 import uuid
-import base64
 import httpx
-from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
 
-PORTRAITS_DIR = Path("storage/portraits")
-MESHES_DIR = Path("storage/meshes")
-
-IMGBB_API_KEY = os.getenv("IMGBB_API_KEY")
-
-
-def save_portrait(image_bytes: bytes, extension: str = "png") -> str:
-    filename = f"{uuid.uuid4()}.{extension}"
-    path = PORTRAITS_DIR / filename
-    path.write_bytes(image_bytes)
-    return f"/storage/portraits/{filename}"
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+SUPABASE_BUCKET = "studio-wars"
 
 
-async def upload_to_imgbb(image_bytes: bytes) -> str:
-    b64 = base64.b64encode(image_bytes).decode("utf-8")
+async def upload_to_supabase(folder: str, filename: str, content: bytes, content_type: str) -> str:
+    if not SUPABASE_URL or not SUPABASE_KEY:
+        raise ValueError("SUPABASE_URL and SUPABASE_KEY must be set in .env")
+
+    # Ensure URL doesn't have a trailing slash
+    base_url = SUPABASE_URL.rstrip('/')
+    
+    url = f"{base_url}/storage/v1/object/{SUPABASE_BUCKET}/{folder}/{filename}"
+    headers = {
+        "Authorization": f"Bearer {SUPABASE_KEY}",
+        "apikey": SUPABASE_KEY,
+        "Content-Type": content_type
+    }
+
     async with httpx.AsyncClient() as client:
-        response = await client.post(
-            "https://api.imgbb.com/1/upload",
-            data={"key": IMGBB_API_KEY, "image": b64},
-            timeout=30.0,
-        )
+        response = await client.post(url, content=content, headers=headers, timeout=60.0)
+        # If the file already exists or there is an error, this will raise an exception
         response.raise_for_status()
-        return response.json()["data"]["url"]
+
+    # Return the public URL
+    return f"{base_url}/storage/v1/object/public/{SUPABASE_BUCKET}/{folder}/{filename}"
 
 
 async def download_and_save_mesh(url: str) -> str:
     filename = f"{uuid.uuid4()}.glb"
-    path = MESHES_DIR / filename
+    
     async with httpx.AsyncClient() as client:
         response = await client.get(url, timeout=60.0)
         response.raise_for_status()
-        path.write_bytes(response.content)
-    return f"/storage/meshes/{filename}"
+        mesh_bytes = response.content
+        
+    return await upload_to_supabase("meshes", filename, mesh_bytes, "model/gltf-binary")

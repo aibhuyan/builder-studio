@@ -8,8 +8,10 @@ backend/**/*.pyc
 backend/**/*.pyo
 backend/storage/portraits/*
 backend/storage/meshes/*
+backend/storage/heroes/*
 !backend/storage/portraits/.gitkeep
 !backend/storage/meshes/.gitkeep
+!backend/storage/heroes/.gitkeep
 
 # ── Frontend ─────────────────────────────────────────────
 frontend/node_modules/

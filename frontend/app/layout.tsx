@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/roster" className="text-sm text-stone-400 hover:text-amber-400 transition-colors">
               Roster
             </Link>
-<Link href="/admin" className="text-sm text-stone-400 hover:text-amber-400 transition-colors">
+            <Link href="/admin" className="text-sm text-stone-400 hover:text-amber-400 transition-colors">
               Admin
             </Link>
             <Link
