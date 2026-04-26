@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Sparkles, Swords, Bot, ShieldCheck, UserCheck, Box, ArrowRight, Rocket } from "lucide-react"
+import { Sparkles, Swords, Bot, ShieldCheck, UserCheck, Box, ArrowRight, Rocket, Warehouse } from "lucide-react"
 import { CreateButton } from "@/components/create-button"
 
 const PIPELINE = [
@@ -13,19 +13,11 @@ const PIPELINE = [
   },
   {
     icon: Swords,
-    label: "AI Design",
-    desc: "Agents craft a portrait, stats, abilities, and lore tuned to your concept.",
+    label: "AI Forge",
+    desc: "Agents design portraits, stats, and balance the troop against the roster.",
     color: "text-orange-400",
     bg: "bg-orange-500/10",
     border: "border-orange-500/30",
-  },
-  {
-    icon: Bot,
-    label: "Balance Check",
-    desc: "A dedicated agent validates stat totals and type alignment against game rules.",
-    color: "text-yellow-400",
-    bg: "bg-yellow-500/10",
-    border: "border-yellow-500/30",
   },
   {
     icon: ShieldCheck,
@@ -37,16 +29,24 @@ const PIPELINE = [
   },
   {
     icon: UserCheck,
-    label: "Human Approve",
-    desc: "A director reviews the trust report and makes the final call.",
+    label: "Human Gate",
+    desc: "Directors review the AI reports and authorize the troop for deployment.",
     color: "text-red-400",
     bg: "bg-red-500/10",
     border: "border-red-500/30",
   },
   {
     icon: Box,
-    label: "3D & Roster",
-    desc: "Approved characters get a full 3D model and join the live roster.",
+    label: "3D Mesh Forge",
+    desc: "Manually trigger high-fidelity 3D generation to bring your troop to life.",
+    color: "text-purple-400",
+    bg: "bg-purple-500/10",
+    border: "border-purple-500/30",
+  },
+  {
+    icon: Warehouse,
+    label: "Troops Ground",
+    desc: "Join the live roster and pick your favorites for your Shadow Barrack.",
     color: "text-amber-300",
     bg: "bg-amber-400/10",
     border: "border-amber-400/30",
