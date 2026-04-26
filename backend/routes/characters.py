@@ -17,6 +17,11 @@ from fastapi import BackgroundTasks
 router = APIRouter()
 
 
+@router.get("/debug")
+def debug_characters(db: Session = Depends(get_db)):
+    return db.query(models.Character).all()
+
+
 @router.post("/generate")
 async def generate_character(data: schemas.CharacterCreate, background_tasks: BackgroundTasks):
     async def event_stream():
@@ -211,9 +216,6 @@ def get_my_characters(created_by: str, db: Session = Depends(get_db)):
     return troops
 
 
-@router.get("/debug", response_model=list[schemas.CharacterResponse])
-def debug_characters(db: Session = Depends(get_db)):
-    return db.query(models.Character).all()
 
 
 @router.post("/{character_id}/generate-3d", response_model=schemas.CharacterResponse)
