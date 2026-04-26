@@ -7,7 +7,7 @@ load_dotenv()
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-SUPABASE_BUCKET = "studio-wars"
+SUPABASE_BUCKET = "builder-studio"
 
 
 async def upload_to_supabase(folder: str, filename: str, content: bytes, content_type: str) -> str:
