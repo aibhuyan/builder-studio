@@ -68,8 +68,8 @@ export default function Home() {
           <span className="text-amber-400">Be one.</span>
         </h1>
         <p className="text-lg md:text-xl text-stone-400 max-w-2xl mx-auto leading-relaxed mb-10">
-          Pitch a concept. Watch 4 AI agents design, balance, and screen your character in real time.
-          Directors approve the best — and they get a 3D model.
+          Pitch a concept. Watch AI agents design, balance, and screen your troop in real time.
+          Directors authorize the best — then you forge the 3D model and join the Troops Ground.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <CreateButton label="Create a Character" />
@@ -122,7 +122,7 @@ export default function Home() {
       {/* Trust section */}
       <section className="px-8 py-20 max-w-4xl mx-auto text-center">
         <div className="text-xs font-mono font-bold text-amber-500 uppercase tracking-widest mb-4">
-          Best Trust Implementation
+          The Trust
         </div>
         <h3 className="text-2xl md:text-3xl font-black tracking-tight mb-4">
           You always know what the AI is doing — and why.
@@ -150,9 +150,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="px-8 py-6 border-t border-amber-900/30 flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-mono text-stone-600 uppercase tracking-widest">
         <span>Builder Studio · Agentic Character Forge</span>
-        <Link href="/admin" className="hover:text-amber-400 transition-colors">
-          Admin
-        </Link>
+
       </footer>
 
     </div>
