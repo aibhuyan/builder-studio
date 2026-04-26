@@ -68,8 +68,8 @@ export default function Home() {
           <span className="text-amber-400">Be one.</span>
         </h1>
         <p className="text-lg md:text-xl text-stone-400 max-w-2xl mx-auto leading-relaxed mb-10">
-          Pitch a concept. Watch AI agents design, balance, and screen your troop in real time.
-          Directors authorize the best — then you forge the 3D model and join the Troops Ground.
+          Pitch a concept. Watch 4 AI agents design, balance, and screen your character in real time.
+          Directors approve the best — and they get a 3D model.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <CreateButton label="Create a Character" />

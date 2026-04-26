@@ -361,11 +361,8 @@ export default function CreatePage() {
           {/* Status */}
           {isDone && state.characterId && (
             <div className="bg-green-900/30 border border-green-800 rounded-lg p-4 text-center space-y-2">
-              <div className="text-green-400 font-semibold">✓ Troop Created!</div>
-              <p className="text-sm text-stone-400">Pending admin approval before joining the roster.</p>
-              <Link href="/admin" className="inline-block mt-1 text-sm text-amber-400 hover:text-amber-300 underline">
-                Review in Admin →
-              </Link>
+              <div className="text-green-400 font-semibold">✓ Character Created!</div>
+              <p className="text-sm text-stone-400">Pending admin approval before joining the Troops Ground.</p>
             </div>
           )}
 
