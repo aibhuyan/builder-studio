@@ -8,6 +8,7 @@ class Character(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     pitch = Column(Text, nullable=False)
+    created_by = Column(String(50))
 
     # Identity
     name = Column(String(100))

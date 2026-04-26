@@ -31,7 +31,7 @@ export default function RosterPage() {
   }, [])
 
   if (loading) {
-    return <div className="text-gray-500 text-center py-20">Loading roster...</div>
+    return <div className="text-gray-500 text-center py-20">Opening Troops Ground...</div>
   }
 
   const topCharacterId = characters.length > 0 ? characters[0].id : null
@@ -42,7 +42,7 @@ export default function RosterPage() {
       <div className="bg-amber-950/40 border border-amber-700/50 rounded-xl px-5 py-4 flex items-center justify-between">
         <div>
           <div className="text-amber-400 font-black text-sm uppercase tracking-widest mb-0.5">
-            Community Vote
+            Troops Ground
           </div>
           <p className="text-stone-300 text-sm">
             Vote for your favourite character. The top pick joins Builder Studio.
@@ -59,8 +59,8 @@ export default function RosterPage() {
       </div>
 
       <div>
-        <h1 className="text-3xl font-bold">Character Roster</h1>
-        <p className="text-gray-400 mt-1">{characters.length} approved characters</p>
+        <h1 className="text-3xl font-bold italic tracking-tighter uppercase">Troops Ground</h1>
+        <p className="text-gray-400 mt-1">{characters.length} approved troops</p>
       </div>
 
       {characters.length === 0 ? (

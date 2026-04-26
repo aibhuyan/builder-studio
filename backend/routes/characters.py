@@ -23,7 +23,7 @@ async def generate_character(data: schemas.CharacterCreate):
             pitch_summary = f"{data.troop_name} — {data.archetype_template} | {data.special_ability} ability | weakness: {data.weakness}"
             if data.creative_prompt:
                 pitch_summary += f" | {data.creative_prompt}"
-            char = models.Character(pitch=pitch_summary, status="draft")
+            char = models.Character(pitch=pitch_summary, status="draft", created_by=data.created_by)
             db.add(char)
             db.commit()
             db.refresh(char)
@@ -195,3 +195,10 @@ def get_glb_status(character_id: int, db: Session = Depends(get_db)):
         "glb_url": character.glb_url,
         "glb_error": character.glb_error,
     }
+
+
+@router.get("/mine", response_model=list[schemas.CharacterResponse])
+def get_my_characters(created_by: str, db: Session = Depends(get_db)):
+    return db.query(models.Character).filter(
+        models.Character.created_by == created_by
+    ).order_by(models.Character.created_at.desc()).all()

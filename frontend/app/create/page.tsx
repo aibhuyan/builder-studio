@@ -1,11 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useCharacterStream, TroopFormData } from "@/hooks/use-character-stream"
 import { AgentPipeline } from "@/components/agent-pipeline"
 import { API_BASE } from "@/lib/api"
 import Link from "next/link"
 import Image from "next/image"
+
+const STORAGE_KEY = "builder_studio_user"
 
 const ARCHETYPES = [
   { id: "barbarian", label: "Barbarian", emoji: "🪓", desc: "Fast melee attacker", stats: "High ATK · High SPD" },
@@ -38,6 +40,9 @@ const WEAKNESSES = [
 ]
 
 export default function CreatePage() {
+  const [currentUser, setCurrentUser] = useState<string | null>(null)
+  useEffect(() => { setCurrentUser(localStorage.getItem(STORAGE_KEY)) }, [])
+
   const [troopName, setTroopName] = useState("")
   const [archetype, setArchetype] = useState("")
   const [target, setTarget] = useState("")
@@ -62,6 +67,7 @@ export default function CreatePage() {
       special_ability: ability,
       weakness,
       creative_prompt: creativePrompt.trim() || undefined,
+      created_by: currentUser ?? undefined,
     }
     generate(formData)
   }

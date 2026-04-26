@@ -10,6 +10,7 @@ class CharacterCreate(BaseModel):
     special_ability: str      # splash / rage / freeze / chain / heal
     weakness: str             # low_hp / slow / high_housing / single_target / expensive
     creative_prompt: Optional[str] = None
+    created_by: Optional[str] = None
 
 
 class AdminDecision(BaseModel):
@@ -55,6 +56,7 @@ class CharacterResponse(BaseModel):
     ai_reasoning: Optional[str] = None
     human_decision: Optional[str] = None
     human_note: Optional[str] = None
+    created_by: Optional[str] = None
     upvotes: int = 0
     downvotes: int = 0
     agent_transcript: Optional[Any] = None

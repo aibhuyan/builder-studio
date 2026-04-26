@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Sparkles, Swords, Bot, ShieldCheck, UserCheck, Box, ArrowRight, Rocket } from "lucide-react"
+import { CreateButton } from "@/components/create-button"
 
 const PIPELINE = [
   {
@@ -71,17 +72,12 @@ export default function Home() {
           Directors approve the best — and they get a 3D model.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Link
-            href="/create"
-            className="flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black uppercase tracking-widest text-sm h-14 px-8 rounded-xl shadow-[0_0_30px_rgba(251,191,36,0.4)] transition-colors"
-          >
-            <Sparkles className="w-4 h-4" /> Create a Character
-          </Link>
+          <CreateButton label="Create a Character" />
           <Link
             href="/roster"
             className="flex items-center gap-2 border border-amber-900/50 hover:border-amber-700/70 text-stone-300 hover:text-amber-400 font-bold uppercase tracking-widest text-sm h-14 px-8 rounded-xl transition-colors"
           >
-            View Roster
+            Troops Ground
           </Link>
         </div>
       </section>
@@ -153,12 +149,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <Link
-          href="/create"
-          className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black uppercase tracking-widest text-sm h-14 px-8 rounded-xl shadow-[0_0_30px_rgba(251,191,36,0.4)] transition-colors"
-        >
-          <Sparkles className="w-4 h-4" /> Start Creating
-        </Link>
+        <CreateButton label="Start Creating" />
       </section>
 
       {/* Footer */}

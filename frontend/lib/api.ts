@@ -14,6 +14,12 @@ export async function getCharacter(id: number): Promise<Character> {
   return res.json()
 }
 
+export async function getMyCreations(createdBy: string): Promise<Character[]> {
+  const res = await fetch(`${BASE_URL}/characters/mine?created_by=${encodeURIComponent(createdBy)}`)
+  if (!res.ok) throw new Error("Failed to fetch my creations")
+  return res.json()
+}
+
 export async function getGlbStatus(id: number) {
   const res = await fetch(`${BASE_URL}/characters/${id}/glb-status`)
   if (!res.ok) throw new Error("Failed to fetch GLB status")

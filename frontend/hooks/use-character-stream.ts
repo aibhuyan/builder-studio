@@ -13,6 +13,7 @@ export interface TroopFormData {
   special_ability: string
   weakness: string
   creative_prompt?: string
+  created_by?: string
 }
 
 export interface StreamState {

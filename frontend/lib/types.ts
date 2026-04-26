@@ -25,6 +25,7 @@ export interface Character {
   ai_reasoning: string | null
   human_decision: string | null
   human_note: string | null
+  created_by: string | null
   upvotes: number
   downvotes: number
   agent_transcript: AgentStep[] | null
