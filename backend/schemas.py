@@ -49,6 +49,8 @@ class CharacterResponse(BaseModel):
     portrait_url: Optional[str] = None
     glb_url: Optional[str] = None
     glb_status: Optional[str] = None
+    glb_task_id: Optional[str] = None
+    glb_error: Optional[str] = None
     status: str
     ai_score: Optional[float] = None
     ai_recommendation: Optional[str] = None
@@ -63,5 +65,6 @@ class CharacterResponse(BaseModel):
     balance_transcript: Optional[Any] = None
     screening_transcript: Optional[Any] = None
     created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
     model_config = {"from_attributes": True}
