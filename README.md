@@ -51,10 +51,10 @@ Approved troops go to the public roster where players vote them up or down. The 
 
 | Layer | Technology |
 |-------|-----------|
-| Backend | FastAPI, SQLAlchemy, SQLite, Uvicorn |
+| Backend | FastAPI, SQLAlchemy, PostgreSQL, Uvicorn |
 | AI | OpenAI GPT-4o-mini + DALL-E 3 |
 | 3D Generation | Meshy API (image-to-3D) |
-| Image Hosting | ImgBB API |
+| Database & Storage | Supabase (Postgres + S3 Buckets) |
 | Frontend | Next.js 16, React 19, TypeScript, Tailwind CSS 4 |
 | Streaming | Server-Sent Events (SSE) |
 | 3D Viewer | @google/model-viewer |
@@ -67,7 +67,7 @@ Approved troops go to the public roster where players vote them up or down. The 
 
 - Python 3.11+
 - Node.js 18+
-- API keys for OpenAI, Meshy, and ImgBB
+- API keys for OpenAI, Meshy, and Supabase
 
 ### 1. Clone the repo
 
@@ -97,7 +97,9 @@ cp .env.example .env
 ```
 OPENAI_API_KEY=your_openai_api_key
 MESHY_API_KEY=your_meshy_api_key
-IMGBB_API_KEY=your_imgbb_api_key
+DATABASE_URL=your_supabase_postgres_url
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_KEY=your_supabase_anon_key
 ```
 
 ```bash
@@ -132,7 +134,9 @@ The app will be available at `http://localhost:3000`.
 |-----|----------------|
 | `OPENAI_API_KEY` | [platform.openai.com](https://platform.openai.com) |
 | `MESHY_API_KEY` | [meshy.ai](https://www.meshy.ai) |
-| `IMGBB_API_KEY` | [api.imgbb.com](https://api.imgbb.com) |
+| `SUPABASE_URL` | [supabase.com](https://supabase.com) -> Project Settings -> API |
+| `SUPABASE_KEY` | [supabase.com](https://supabase.com) -> Project Settings -> API |
+| `DATABASE_URL` | [supabase.com](https://supabase.com) -> Project Settings -> Database -> URI |
 
 ---
 
@@ -152,16 +156,13 @@ studio-wars/
 │   │   └── admin.py              # Approval queue + mesh retry
 │   ├── models.py                 # SQLAlchemy Character model
 │   ├── schemas.py                # Pydantic request/response schemas
-│   ├── database.py               # SQLite setup
-│   ├── storage.py                # File + ImgBB upload helpers
+│   ├── database.py               # Database setup (PostgreSQL/SQLite)
+│   ├── storage.py                # Supabase Storage upload helpers
 │   ├── streaming.py              # SSE event helpers
 │   ├── main.py                   # FastAPI app entry point
 │   ├── migrate_votes.py          # One-time DB migration for vote columns
 │   ├── requirements.txt
-│   ├── .env.example
-│   └── storage/
-│       ├── portraits/            # Local portrait cache
-│       └── meshes/               # Downloaded GLB files
+│   └── .env.example
 └── frontend/
     ├── app/
     │   ├── page.tsx              # Home / pipeline overview
