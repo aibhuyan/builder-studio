@@ -1,4 +1,4 @@
-# Studio Wars
+# Builder Studio
 
 An AI-powered troop creation pipeline for a Clash of Clans-style strategy game. Players design troops through a guided builder, a multi-agent AI pipeline generates balanced stats and artwork, and a human director approves each troop before it joins the live roster.
 
@@ -43,7 +43,7 @@ The AI generates stats within locked ranges for each archetype. Players can neve
 
 ### Community Voting
 
-Approved troops go to the public roster where players vote them up or down. The most-voted troop gets selected for the main Studio Wars game.
+Approved troops go to the public roster where players vote them up or down. The most-voted troop gets selected for the main Builder Studio game.
 
 ---
 
@@ -201,6 +201,6 @@ studio-wars/
 - **Hidden stat normalization** — archetype + ability + weakness choices lock stat ranges; players can't create broken troops
 - **Roster-aware balancing** — balance agent compares new troops against existing roster
 - **Rejection feedback loop** — director rejection notes are injected into the next generation prompt
-- **Community voting** — upvote/downvote per session (localStorage dedup), top pick joins Studio Wars
+- **Community voting** — upvote/downvote per session (localStorage dedup), top pick joins Builder Studio
 - **3D model generation** — approved troops automatically get a GLB model via Meshy, viewable in-browser
 - **Full audit trail** — every agent's reasoning transcript stored per troop

@@ -62,7 +62,7 @@ export default function Home() {
           <Rocket className="w-3.5 h-3.5" /> Agentic Character Creation
         </div>
         <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.95] mb-6">
-          Every character has a creator.
+          Every troop has a creator.
           <br />
           <span className="text-amber-400">Be one.</span>
         </h1>
@@ -163,7 +163,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="px-8 py-6 border-t border-amber-900/30 flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-mono text-stone-600 uppercase tracking-widest">
-        <span>Studio Wars · Agentic Character Forge</span>
+        <span>Builder Studio · Agentic Character Forge</span>
         <Link href="/admin" className="hover:text-amber-400 transition-colors">
           Admin
         </Link>

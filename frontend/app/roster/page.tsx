@@ -45,7 +45,7 @@ export default function RosterPage() {
             Community Vote
           </div>
           <p className="text-stone-300 text-sm">
-            Vote for your favourite character. The top pick joins Studio Wars.
+            Vote for your favourite character. The top pick joins Builder Studio.
           </p>
         </div>
         {topCharacterId && characters[0].name && (

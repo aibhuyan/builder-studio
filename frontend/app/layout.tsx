@@ -7,8 +7,8 @@ import { ArrowRight } from "lucide-react"
 const geist = Geist({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Studio Wars",
-  description: "AI-powered character creation for Studio Wars",
+  title: "Builder Studio",
+  description: "AI-powered character creation for Builder Studio",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div className="w-4 h-4 rounded bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.6)] animate-pulse" />
             </div>
             <Link href="/" className="text-lg font-black tracking-tight text-amber-400">
-              STUDIO WARS
+              BUILDER STUDIO
             </Link>
           </div>
           <div className="flex items-center gap-4">

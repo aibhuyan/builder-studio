@@ -8,7 +8,7 @@ load_dotenv()
 
 client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-SYSTEM_PROMPT = """You are a game designer for Studio Wars, a mobile strategy game in the style of Clash of Clans.
+SYSTEM_PROMPT = """You are a game designer for Builder Studio, a mobile strategy game in the style of Clash of Clans.
 
 A player has built a troop using a structured builder. Generate the final troop stats and lore.
 

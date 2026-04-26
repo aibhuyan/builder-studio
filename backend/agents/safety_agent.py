@@ -8,7 +8,7 @@ load_dotenv()
 
 client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-SYSTEM_PROMPT = """You are a content safety reviewer for Studio Wars, a game played by all ages.
+SYSTEM_PROMPT = """You are a content safety reviewer for Builder Studio, a game played by all ages.
 Screen AI-generated characters for safety, appropriateness, and IP concerns.
 Be thorough but fair — dark or edgy characters can still pass. The bar is legal and age-appropriate content."""
 
@@ -23,7 +23,7 @@ async def screen_character(character: dict, original_pitch: str) -> AsyncGenerat
             {"role": "system", "content": SYSTEM_PROMPT},
             {
                 "role": "user",
-                "content": f"""Screen this Studio Wars character for safety.
+                "content": f"""Screen this Builder Studio character for safety.
 
 Original pitch: "{original_pitch}"
 Character: {json.dumps(character, indent=2)}
