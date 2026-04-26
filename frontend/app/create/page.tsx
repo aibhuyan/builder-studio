@@ -312,7 +312,8 @@ export default function CreatePage() {
               <button
                 type="button"
                 onClick={handleReset}
-                className="border border-stone-700 hover:border-stone-500 text-stone-300 px-4 py-3 rounded-lg transition-colors"
+                disabled={glbStatus === "generating"}
+                className="border border-stone-700 hover:border-stone-500 text-stone-300 px-4 py-3 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 Reset
               </button>
