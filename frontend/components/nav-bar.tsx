@@ -77,7 +77,7 @@ export function NavBar() {
               href="/my-creations" 
               className={`text-sm transition-colors ${pathname === "/my-creations" ? "text-amber-400 font-bold" : "text-stone-400 hover:text-amber-400"}`}
             >
-              My Creations
+              My Troops
             </Link>
             <Link 
               href="/roster" 

@@ -51,11 +51,38 @@ export default function CreatePage() {
   const [creativePrompt, setCreativePrompt] = useState("")
 
   const { state, generate, reset } = useCharacterStream()
+  const [glbStatus, setGlbStatus] = useState<"none" | "generating" | "ready" | "failed">("none")
+  const [glbUrl, setGlbUrl] = useState<string | null>(null)
 
   const isReady = troopName.trim() && archetype && target && ability && weakness
   const isStreaming = state.status === "streaming"
   const isDone = state.status === "done"
   const isError = state.status === "error"
+
+  // Polling for 3D status
+  useEffect(() => {
+    let interval: NodeJS.Timeout
+    if (isDone && state.characterId && glbStatus === "generating") {
+      interval = setInterval(async () => {
+        try {
+          const res = await fetch(`${API_BASE}/characters/${state.characterId}/glb-status`)
+          if (res.ok) {
+            const data = await res.json()
+            setGlbStatus(data.glb_status)
+            if (data.glb_status === "ready") {
+              setGlbUrl(data.glb_url)
+              clearInterval(interval)
+            } else if (data.glb_status === "failed") {
+              clearInterval(interval)
+            }
+          }
+        } catch (e) {
+          console.error("Polling error", e)
+        }
+      }, 3000)
+    }
+    return () => clearInterval(interval)
+  }, [isDone, state.characterId, glbStatus])
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -74,6 +101,8 @@ export default function CreatePage() {
 
   const handleReset = () => {
     reset()
+    setGlbStatus("none")
+    setGlbUrl(null)
     setTroopName("")
     setArchetype("")
     setTarget("")
@@ -252,21 +281,30 @@ export default function CreatePage() {
             {isDone && state.characterId && (
               <button
                 type="button"
+                disabled={glbStatus === "generating" || glbStatus === "ready"}
                 onClick={async () => {
                   try {
+                    setGlbStatus("generating")
                     const res = await fetch(`${API_BASE}/characters/${state.characterId}/generate-3d`, {
                       method: "POST",
                     })
-                    if (res.ok) {
-                      alert("3D Model generation started! It will appear in the Barracks once ready.")
+                    if (!res.ok) {
+                      setGlbStatus("failed")
                     }
                   } catch (e) {
                     console.error("Failed to trigger 3D generation", e)
+                    setGlbStatus("failed")
                   }
                 }}
-                className="flex-1 bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-lg font-black uppercase tracking-wide transition-colors shadow-[0_0_20px_rgba(147,51,234,0.3)]"
+                className={`flex-1 py-3 rounded-lg font-black uppercase tracking-wide transition-colors shadow-lg ${
+                  glbStatus === "generating"
+                    ? "bg-stone-800 text-stone-500 cursor-not-allowed"
+                    : glbStatus === "ready"
+                    ? "bg-green-600 text-white cursor-default"
+                    : "bg-purple-600 hover:bg-purple-500 text-white shadow-[0_0_20px_rgba(147,51,234,0.3)]"
+                }`}
               >
-                Generate 3D
+                {glbStatus === "generating" ? "Forging 3D..." : glbStatus === "ready" ? "3D Ready ✓" : "Generate 3D"}
               </button>
             )}
 
@@ -287,16 +325,30 @@ export default function CreatePage() {
           {/* Portrait */}
           <div className="aspect-square bg-stone-900 border border-stone-800 rounded-xl overflow-hidden flex items-center justify-center relative">
             {state.portraitUrl ? (
-              <Image
-                src={
-                  state.portraitUrl.startsWith("http") || state.portraitUrl.startsWith("data:")
-                    ? state.portraitUrl
-                    : `${API_BASE}${state.portraitUrl}`
-                }
-                alt="Troop portrait"
-                fill
-                className="object-cover"
-              />
+              <>
+                <Image
+                  src={
+                    state.portraitUrl.startsWith("http") || state.portraitUrl.startsWith("data:")
+                      ? state.portraitUrl
+                      : `${API_BASE}${state.portraitUrl}`
+                  }
+                  alt="Troop portrait"
+                  fill
+                  className="object-cover"
+                />
+                {glbStatus === "generating" && (
+                  <div className="absolute inset-0 bg-stone-950/60 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4">
+                    <div className="w-10 h-10 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-3" />
+                    <div className="text-purple-400 font-bold uppercase tracking-tighter text-sm">Forging 3D Model</div>
+                    <p className="text-[10px] text-stone-400 mt-1">This takes about 60 seconds</p>
+                  </div>
+                )}
+                {glbStatus === "ready" && (
+                  <div className="absolute top-2 right-2 bg-green-500 text-white text-[10px] font-black px-2 py-1 rounded shadow-lg animate-bounce">
+                    3D READY
+                  </div>
+                )}
+              </>
             ) : (
               <div className="text-center text-stone-600">
                 <div className="text-5xl mb-3">🎨</div>

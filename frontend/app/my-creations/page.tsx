@@ -36,8 +36,8 @@ export default function MyCreationsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">My Creations</h1>
-          <p className="text-stone-400 mt-1">{user} · {troops.length} troop{troops.length !== 1 ? "s" : ""} created</p>
+          <h1 className="text-3xl font-bold">My Troops</h1>
+          <p className="text-stone-400 mt-1">{user} · {troops.length} troop{troops.length !== 1 ? "s" : ""} in your barracks</p>
         </div>
         <Link href="/create" className="bg-amber-500 hover:bg-amber-400 text-stone-950 font-black px-4 py-2 rounded-lg uppercase tracking-wide text-sm transition-colors">
           + Create New
