@@ -2,7 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react"
 
-const STORAGE_KEY = "shadow_barrack_picks"
+const USER_KEY = "builder_studio_user"
+const STORAGE_PREFIX = "shadow_barrack_picks_"
 
 interface ShadowBarrackContextType {
   pickedIds: number[]
@@ -14,34 +15,46 @@ const ShadowBarrackContext = createContext<ShadowBarrackContextType | undefined>
 
 export function ShadowBarrackProvider({ children }: { children: React.ReactNode }) {
   const [pickedIds, setPickedIds] = useState<number[]>([])
+  const [user, setUser] = useState<string | null>(null)
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored) {
-      try {
-        setPickedIds(JSON.parse(stored))
-      } catch (e) {
-        console.error("Failed to parse shadow barrack picks", e)
-      }
+    const currentUser = localStorage.getItem(USER_KEY)
+    setUser(currentUser)
+    if (currentUser) {
+      const stored = localStorage.getItem(STORAGE_PREFIX + currentUser)
+      setPickedIds(stored ? JSON.parse(stored) : [])
     }
   }, [])
+
+  // Sync when user changes (polled because login/logout are external)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentUser = localStorage.getItem(USER_KEY)
+      if (currentUser !== user) {
+        setUser(currentUser)
+        if (currentUser) {
+          const stored = localStorage.getItem(STORAGE_PREFIX + currentUser)
+          setPickedIds(stored ? JSON.parse(stored) : [])
+        } else {
+          setPickedIds([])
+        }
+      }
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [user])
 
   const isPicked = useCallback((id: number) => {
     return pickedIds.includes(id)
   }, [pickedIds])
 
   const togglePick = useCallback((id: number) => {
+    if (!user) return
     setPickedIds((prev) => {
-      let next
-      if (prev.includes(id)) {
-        next = prev.filter((p) => p !== id)
-      } else {
-        next = [...prev, id]
-      }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+      const next = prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
+      localStorage.setItem(STORAGE_PREFIX + user, JSON.stringify(next))
       return next
     })
-  }, [])
+  }, [user])
 
   return (
     <ShadowBarrackContext.Provider value={{ pickedIds, isPicked, togglePick }}>
