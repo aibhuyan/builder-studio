@@ -63,6 +63,15 @@ export function CharacterCard({ character, onClick, isWinner }: CharacterCardPro
         {isWinner && (
           <div className="absolute top-2 left-2 text-xl z-10" title="Community Top Pick">👑</div>
         )}
+        {pathname === "/my-creations" && (
+          <div className={`absolute bottom-2 left-2 text-[8px] font-black uppercase tracking-tighter px-2 py-0.5 rounded-md border backdrop-blur-md z-10 ${
+            character.status === "approved" ? "bg-green-950/80 border-green-500 text-green-400" :
+            character.status === "rejected" ? "bg-red-950/80 border-red-500 text-red-400" :
+            "bg-amber-950/80 border-amber-500 text-amber-400"
+          }`}>
+            {character.status.replace("_", " ")}
+          </div>
+        )}
       </div>
 
       {/* Info */}
