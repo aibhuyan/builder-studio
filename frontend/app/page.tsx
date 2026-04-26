@@ -149,7 +149,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <CreateButton label="Start Creating" />
+
       </section>
 
       {/* Footer */}
