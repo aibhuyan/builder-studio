@@ -134,36 +134,38 @@ export function CharacterCard({ character, onClick, isWinner }: CharacterCardPro
           </span>
         </div>
 
-        {/* Trust badge & Pick button */}
-        <div className="flex items-center justify-between gap-2">
-          {character.ai_score != null && (
-            <div className={`flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full w-fit border ${
-              character.ai_score >= 80
-                ? "bg-green-900/40 text-green-400 border-green-800"
-                : character.ai_score >= 60
-                ? "bg-yellow-900/40 text-yellow-400 border-yellow-800"
-                : "bg-red-900/40 text-red-400 border-red-800"
-            }`}>
-              🛡 Trust {character.ai_score}
-            </div>
-          )}
-
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              togglePick(character.id)
-            }}
-            className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg transition-all border ${
-              picked
-                ? isShadowBarrack
-                  ? "bg-red-500/10 border-red-500/50 text-red-400 hover:bg-red-500 hover:text-white"
-                  : "bg-amber-500/10 border-amber-500 text-amber-400"
-                : "bg-stone-800/40 border-stone-700 text-stone-500 hover:border-amber-500/50 hover:text-amber-400"
-            }`}
-          >
-            {isShadowBarrack ? "Unpick" : picked ? "Picked ✓" : "Pick"}
-          </button>
-        </div>
+          {/* Trust badge & Pick button */}
+          <div className="flex items-center justify-between gap-2">
+            {character.ai_score != null && (
+              <div className={`flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full w-fit border ${
+                character.ai_score >= 80
+                  ? "bg-green-900/40 text-green-400 border-green-800"
+                  : character.ai_score >= 60
+                  ? "bg-yellow-900/40 text-yellow-400 border-yellow-800"
+                  : "bg-red-900/40 text-red-400 border-red-800"
+              }`}>
+                🛡 Trust {character.ai_score}
+              </div>
+            )}
+  
+            {typeof window !== "undefined" && localStorage.getItem("builder_studio_user") !== "Admin" && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  togglePick(character.id)
+                }}
+                className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg transition-all border ${
+                  picked
+                    ? isShadowBarrack
+                      ? "bg-red-500/10 border-red-500/50 text-red-400 hover:bg-red-500 hover:text-white"
+                      : "bg-amber-500/10 border-amber-500 text-amber-400"
+                    : "bg-stone-800/40 border-stone-700 text-stone-500 hover:border-amber-500/50 hover:text-amber-400"
+                }`}
+              >
+                {isShadowBarrack ? "Unpick" : picked ? "Picked ✓" : "Pick"}
+              </button>
+            )}
+          </div>
       </div>
     </div>
   )
