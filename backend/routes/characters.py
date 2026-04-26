@@ -142,6 +142,18 @@ async def generate_character(data: schemas.CharacterCreate, background_tasks: Ba
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
 
+@router.get("/mine")
+async def get_my_characters(user_id: str, db: Session = Depends(get_db)):
+    search_term = user_id.strip()
+    print(f"DEBUG: Fetching troops for owner: '{search_term}'")
+    
+    # Brute force search to ensure no data is lost
+    troops = db.query(models.Character).filter(
+        models.Character.created_by.ilike(search_term)
+    ).order_by(models.Character.created_at.desc()).all()
+    
+    print(f"DEBUG: Found {len(troops)} troops for '{search_term}'")
+    return troops
 
 @router.get("/", response_model=list[schemas.CharacterResponse])
 def list_characters(db: Session = Depends(get_db)):
@@ -206,18 +218,7 @@ def get_glb_status(character_id: int, db: Session = Depends(get_db)):
     }
 
 
-@router.get("/mine")
-def get_my_characters(user_id: str, db: Session = Depends(get_db)):
-    search_term = user_id.strip()
-    print(f"DEBUG: Fetching troops for owner: '{search_term}'")
-    
-    # Brute force search to ensure no data is lost
-    troops = db.query(models.Character).filter(
-        models.Character.created_by.ilike(search_term)
-    ).order_by(models.Character.created_at.desc()).all()
-    
-    print(f"DEBUG: Found {len(troops)} troops for '{search_term}'")
-    return troops
+
 
 
 
