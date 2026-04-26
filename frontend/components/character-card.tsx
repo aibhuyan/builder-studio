@@ -4,8 +4,8 @@ import { Character, RARITY_COLORS, TYPE_ICONS } from "@/lib/types"
 import { API_BASE } from "@/lib/api"
 import Image from "next/image"
 import { useVote } from "@/hooks/use-vote"
-
 import { useShadowBarrack } from "@/hooks/use-shadow-barrack"
+import { usePathname } from "next/navigation"
 
 interface CharacterCardProps {
   character: Character
@@ -15,6 +15,7 @@ interface CharacterCardProps {
 
 export function CharacterCard({ character, onClick, isWinner }: CharacterCardProps) {
   const { isPicked, togglePick } = useShadowBarrack()
+  const pathname = usePathname()
   const rarityClass = RARITY_COLORS[character.rarity ?? "common"] ?? "text-gray-400 border-gray-400"
   const typeIcon = TYPE_ICONS[character.type ?? "warrior"] ?? "⚔️"
   const { upvotes, downvotes, currentVote, loading, vote } = useVote(
@@ -33,6 +34,7 @@ export function CharacterCard({ character, onClick, isWinner }: CharacterCardPro
     : null
 
   const picked = isPicked(character.id)
+  const isShadowBarrack = pathname === "/shadow-barrack"
 
   return (
     <div
@@ -151,13 +153,15 @@ export function CharacterCard({ character, onClick, isWinner }: CharacterCardPro
               e.stopPropagation()
               togglePick(character.id)
             }}
-            className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg transition-all ${
+            className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg transition-all border ${
               picked
-                ? "bg-amber-500 text-stone-950 shadow-[0_0_10px_rgba(251,191,36,0.3)]"
-                : "bg-stone-800 text-stone-400 hover:bg-stone-700 hover:text-amber-400 border border-stone-700"
+                ? isShadowBarrack
+                  ? "bg-red-500/10 border-red-500/50 text-red-400 hover:bg-red-500 hover:text-white"
+                  : "bg-amber-500/10 border-amber-500 text-amber-400"
+                : "bg-stone-800/40 border-stone-700 text-stone-500 hover:border-amber-500/50 hover:text-amber-400"
             }`}
           >
-            {picked ? "Picked ✓" : "Pick"}
+            {isShadowBarrack ? "Unpick" : picked ? "Picked ✓" : "Pick"}
           </button>
         </div>
       </div>

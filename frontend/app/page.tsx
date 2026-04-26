@@ -73,12 +73,7 @@ export default function Home() {
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <CreateButton label="Create a Character" />
-          <Link
-            href="/roster"
-            className="flex items-center gap-2 border border-amber-900/50 hover:border-amber-700/70 text-stone-300 hover:text-amber-400 font-bold uppercase tracking-widest text-sm h-14 px-8 rounded-xl transition-colors"
-          >
-            Troops Ground
-          </Link>
+
         </div>
       </section>
 

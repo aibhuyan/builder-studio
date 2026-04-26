@@ -239,13 +239,37 @@ export default function CreatePage() {
 
           {/* Submit */}
           <div className="flex gap-3">
-            <button
-              type="submit"
-              disabled={!isReady || isStreaming}
-              className="flex-1 bg-amber-500 hover:bg-amber-400 disabled:opacity-40 disabled:cursor-not-allowed text-stone-950 py-3 rounded-lg font-black uppercase tracking-wide transition-colors"
-            >
-              {isStreaming ? "Generating..." : "Generate Troop"}
-            </button>
+            {!isDone && (
+              <button
+                type="submit"
+                disabled={!isReady || isStreaming}
+                className="flex-1 bg-amber-500 hover:bg-amber-400 disabled:opacity-40 disabled:cursor-not-allowed text-stone-950 py-3 rounded-lg font-black uppercase tracking-wide transition-colors"
+              >
+                {isStreaming ? "Generating..." : "Generate Troop"}
+              </button>
+            )}
+
+            {isDone && state.characterId && (
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    const res = await fetch(`${API_BASE}/characters/${state.characterId}/generate-3d`, {
+                      method: "POST",
+                    })
+                    if (res.ok) {
+                      alert("3D Model generation started! It will appear in the Barracks once ready.")
+                    }
+                  } catch (e) {
+                    console.error("Failed to trigger 3D generation", e)
+                  }
+                }}
+                className="flex-1 bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-lg font-black uppercase tracking-wide transition-colors shadow-[0_0_20px_rgba(147,51,234,0.3)]"
+              >
+                Generate 3D
+              </button>
+            )}
+
             {(isDone || isError) && (
               <button
                 type="button"

@@ -62,7 +62,10 @@ export function NavBar() {
 
         {/* Logged in as Admin */}
         {user && isAdmin && (
-          <Link href="/admin" className="text-sm text-stone-400 hover:text-amber-400 transition-colors">
+          <Link 
+            href="/admin" 
+            className={`text-sm transition-colors ${pathname === "/admin" ? "text-amber-400 font-bold" : "text-stone-400 hover:text-amber-400"}`}
+          >
             Admin Panel
           </Link>
         )}
@@ -70,20 +73,29 @@ export function NavBar() {
         {/* Logged in as Player */}
         {user && !isAdmin && (
           <>
-            <Link href="/my-creations" className="text-sm text-stone-400 hover:text-amber-400 transition-colors">
+            <Link 
+              href="/my-creations" 
+              className={`text-sm transition-colors ${pathname === "/my-creations" ? "text-amber-400 font-bold" : "text-stone-400 hover:text-amber-400"}`}
+            >
               My Creations
             </Link>
-            <Link href="/roster" className="text-sm text-stone-400 hover:text-amber-400 transition-colors">
+            <Link 
+              href="/roster" 
+              className={`text-sm transition-colors ${pathname === "/roster" ? "text-amber-400 font-bold" : "text-stone-400 hover:text-amber-400"}`}
+            >
               Troops Ground
             </Link>
-            <Link href="/shadow-barrack" className="text-sm text-stone-400 hover:text-amber-400 transition-colors">
+            <Link 
+              href="/shadow-barrack" 
+              className={`text-sm transition-colors ${pathname === "/shadow-barrack" ? "text-amber-400 font-bold" : "text-stone-400 hover:text-amber-400"}`}
+            >
               Shadow Barrack
             </Link>
-            <Link
-              href="/create"
-              className="flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-stone-950 text-sm font-black px-4 py-2 rounded-lg transition-colors uppercase tracking-wide"
+            <Link 
+              href="/create" 
+              className={`text-sm transition-colors flex items-center gap-2 ${pathname === "/create" ? "text-amber-400 font-bold" : "text-stone-400 hover:text-amber-400"}`}
             >
-              Create <ArrowRight className="w-3.5 h-3.5" />
+              Create <ArrowRight className={`w-3.5 h-3.5 ${pathname === "/create" ? "text-amber-400" : "text-stone-500"}`} />
             </Link>
           </>
         )}

@@ -41,14 +41,8 @@ async def decide_character(
     character.human_note = decision.note
     character.status = "approved" if decision.decision == "approved" else "rejected"
 
-    if decision.decision == "approved":
-        character.glb_status = "generating"
-        db.commit()
-        db.refresh(character)
-        background_tasks.add_task(start_mesh_generation, character.id, character.portrait_url)
-    else:
-        db.commit()
-        db.refresh(character)
+    db.commit()
+    db.refresh(character)
 
     return character
 

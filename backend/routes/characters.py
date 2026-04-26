@@ -11,12 +11,14 @@ from agents.portrait_agent import generate_portrait
 from agents.character_agent import design_character
 from agents.balance_agent import check_balance
 from agents.safety_agent import screen_character
+from agents.mesh_agent import start_mesh_generation
+from fastapi import BackgroundTasks
 
 router = APIRouter()
 
 
 @router.post("/generate")
-async def generate_character(data: schemas.CharacterCreate):
+async def generate_character(data: schemas.CharacterCreate, background_tasks: BackgroundTasks):
     async def event_stream():
         db = SessionLocal()
         try:
@@ -202,3 +204,27 @@ def get_my_characters(created_by: str, db: Session = Depends(get_db)):
     return db.query(models.Character).filter(
         models.Character.created_by == created_by
     ).order_by(models.Character.created_at.desc()).all()
+
+
+@router.post("/{character_id}/generate-3d", response_model=schemas.CharacterResponse)
+async def trigger_3d_generation(
+    character_id: int,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
+    character = db.query(models.Character).filter(
+        models.Character.id == character_id
+    ).first()
+    if not character:
+        raise HTTPException(status_code=404, detail="Character not found")
+    
+    if not character.portrait_url:
+        raise HTTPException(status_code=400, detail="Character has no portrait URL")
+
+    character.glb_status = "generating"
+    character.glb_error = None
+    character.glb_url = None
+    db.commit()
+    db.refresh(character)
+    background_tasks.add_task(start_mesh_generation, character.id, character.portrait_url)
+    return character
