@@ -26,9 +26,11 @@ async def generate_character(data: schemas.CharacterCreate, background_tasks: Ba
             if data.creative_prompt:
                 pitch_summary += f" | {data.creative_prompt}"
             char = models.Character(pitch=pitch_summary, status="draft", created_by=data.created_by)
+            print(f"DEBUG: Creating character for user: {data.created_by}")
             db.add(char)
             db.commit()
             db.refresh(char)
+            print(f"DEBUG: Character saved with ID: {char.id}, Created By: {char.created_by}")
 
             transcript = []
             balance_transcript = []
@@ -201,9 +203,12 @@ def get_glb_status(character_id: int, db: Session = Depends(get_db)):
 
 @router.get("/mine", response_model=list[schemas.CharacterResponse])
 def get_my_characters(created_by: str, db: Session = Depends(get_db)):
-    return db.query(models.Character).filter(
+    print(f"DEBUG: Fetching troops for user: {created_by}")
+    troops = db.query(models.Character).filter(
         models.Character.created_by == created_by
     ).order_by(models.Character.created_at.desc()).all()
+    print(f"DEBUG: Found {len(troops)} troops for {created_by}")
+    return troops
 
 
 @router.post("/{character_id}/generate-3d", response_model=schemas.CharacterResponse)
