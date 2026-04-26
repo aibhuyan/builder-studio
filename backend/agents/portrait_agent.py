@@ -7,16 +7,15 @@ load_dotenv()
 
 client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-PORTRAIT_PROMPT = """Single full-body character portrait for a 3D model reference: {pitch}
+PORTRAIT_PROMPT = """A single standalone full-body character portrait isolated on a solid white background: {pitch}
 
-Requirements:
-- ONE character only, centered, full body visible from head to toe
-- Plain light grey or white background — no scenery, no environment, no shadows on ground
-- Character faces forward (front-facing pose), arms slightly away from body
-- No text, no UI, no frames, no panels, no thumbnails, no multiple views, no character sheets
-- Clean silhouette with no overlapping elements — essential for 3D mesh conversion
-- Style: vibrant game-art illustration, Clash of Clans / mobile strategy game aesthetic
-- High detail on armor, weapons, and costume"""
+CRITICAL RULES:
+1. ONLY ONE CHARACTER. Do not show multiple angles, do not show side views, do not show front/back views.
+2. FULL BODY VISIBLE. Show the character from head to toe, centered in the frame.
+3. SOLID WHITE BACKGROUND. Pure white only. No scenery, no ground, no shadows, no effects in the background.
+4. NO CHARACTER SHEETS. No panels, no frames, no thumbnails, no text. Just one high-quality image.
+5. FRONT-FACING. The character should be facing forward.
+6. STYLE: High-quality vibrant game-art, clean lines, polished mobile game aesthetic (like Clash of Clans)."""
 
 
 async def generate_portrait(pitch: str) -> tuple[str, bytes]:
