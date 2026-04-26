@@ -18,17 +18,21 @@ async def submit_mesh_task(portrait_url: str) -> str:
     headers = {"Authorization": f"Bearer {MESHY_API_KEY}"}
     payload = {
         "image_url": portrait_url,
-        "ai_model": "meshy-6",
     }
     async with httpx.AsyncClient() as client:
+        print(f"Submitting mesh task for: {portrait_url}")
         response = await client.post(
             f"{MESHY_BASE_URL}/image-to-3d",
             json=payload,
             headers=headers,
             timeout=30.0,
         )
+        if response.status_code != 202 and response.status_code != 201 and response.status_code != 200:
+            print(f"Meshy Error: {response.status_code} - {response.text}")
         response.raise_for_status()
-        return response.json()["result"]
+        result = response.json().get("result")
+        print(f"Meshy Task Created: {result}")
+        return result
 
 
 async def poll_mesh_task(task_id: str) -> dict:

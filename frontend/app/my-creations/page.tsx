@@ -83,9 +83,55 @@ export default function MyCreationsPage() {
                   )}
                 </div>
 
-                {/* Status badge */}
-                <div className={`text-xs font-semibold px-3 py-1 rounded-full border flex-shrink-0 ${badge.style}`}>
-                  {badge.label}
+                {/* Status badge & Actions */}
+                <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                  <div className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${badge.style}`}>
+                    {badge.label}
+                  </div>
+                  
+                  {c.glb_status === "none" && (
+                    <button 
+                      onClick={async (e) => {
+                        e.stopPropagation()
+                        try {
+                          await fetch(`${API_BASE}/characters/${c.id}/generate-3d`, { method: "POST" })
+                          window.location.reload()
+                        } catch (e) {
+                          console.error(e)
+                        }
+                      }}
+                      className="text-[10px] bg-purple-600 hover:bg-purple-500 text-white px-2 py-1 rounded font-black uppercase"
+                    >
+                      Forge 3D
+                    </button>
+                  )}
+                  {c.glb_status === "generating" && (
+                    <div className="text-[10px] text-purple-400 font-bold animate-pulse">
+                      Forging...
+                    </div>
+                  )}
+                  {c.glb_status === "ready" && (
+                    <div className="text-[10px] text-green-400 font-bold">
+                      3D Ready
+                    </div>
+                  )}
+                  {c.glb_status === "failed" && (
+                    <button 
+                      onClick={async (e) => {
+                        e.stopPropagation()
+                        try {
+                          await fetch(`${API_BASE}/characters/${c.id}/generate-3d`, { method: "POST" })
+                          window.location.reload()
+                        } catch (e) {
+                          console.error(e)
+                        }
+                      }}
+                      className="text-[10px] bg-red-900/40 text-red-400 border border-red-800 px-2 py-1 rounded font-black uppercase"
+                      title={c.glb_error || "Unknown error"}
+                    >
+                      Retry 3D
+                    </button>
+                  )}
                 </div>
               </div>
             )
