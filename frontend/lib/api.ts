@@ -15,7 +15,7 @@ export async function getCharacter(id: number): Promise<Character> {
 }
 
 export async function getMyCreations(createdBy: string): Promise<Character[]> {
-  const res = await fetch(`${BASE_URL}/characters/mine?created_by=${encodeURIComponent(createdBy)}`)
+  const res = await fetch(`${BASE_URL}/characters/mine?user_id=${encodeURIComponent(createdBy)}`)
   if (!res.ok) throw new Error("Failed to fetch my creations")
   return res.json()
 }

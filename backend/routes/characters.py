@@ -207,11 +207,11 @@ def get_glb_status(character_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/mine")
-def get_my_characters(created_by: str, db: Session = Depends(get_db)):
-    search_term = created_by.strip()
-    print(f"DEBUG: Fetching troops for user: '{search_term}'")
+def get_my_characters(user_id: str, db: Session = Depends(get_db)):
+    search_term = user_id.strip()
+    print(f"DEBUG: Fetching troops for owner: '{search_term}'")
     
-    # Using case-insensitive match for robustness
+    # Brute force search to ensure no data is lost
     troops = db.query(models.Character).filter(
         models.Character.created_by.ilike(search_term)
     ).order_by(models.Character.created_at.desc()).all()
