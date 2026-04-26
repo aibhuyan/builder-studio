@@ -157,7 +157,9 @@ export function CharacterCard({ character, onClick, isWinner }: CharacterCardPro
               </div>
             )}
   
-            {typeof window !== "undefined" && localStorage.getItem("builder_studio_user") !== "Admin" && (
+            {typeof window !== "undefined" && 
+             localStorage.getItem("builder_studio_user") !== "Admin" && 
+             character.status === "approved" && (
               <button
                 onClick={(e) => {
                   e.stopPropagation()
