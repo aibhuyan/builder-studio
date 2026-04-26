@@ -206,7 +206,7 @@ def get_glb_status(character_id: int, db: Session = Depends(get_db)):
     }
 
 
-@router.get("/mine", response_model=list[schemas.CharacterResponse])
+@router.get("/mine")
 def get_my_characters(created_by: str, db: Session = Depends(get_db)):
     print(f"DEBUG: Fetching troops for user: {created_by}")
     troops = db.query(models.Character).filter(
