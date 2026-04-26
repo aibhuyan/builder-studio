@@ -211,6 +211,11 @@ def get_my_characters(created_by: str, db: Session = Depends(get_db)):
     return troops
 
 
+@router.get("/debug", response_model=list[schemas.CharacterResponse])
+def debug_characters(db: Session = Depends(get_db)):
+    return db.query(models.Character).all()
+
+
 @router.post("/{character_id}/generate-3d", response_model=schemas.CharacterResponse)
 async def trigger_3d_generation(
     character_id: int,
