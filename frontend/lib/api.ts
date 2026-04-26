@@ -1,7 +1,6 @@
 import { Character } from "./types"
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
-console.log("DEBUG: Using API Base URL:", BASE_URL)
 
 export async function getCharacters(): Promise<Character[]> {
   const res = await fetch(`${BASE_URL}/characters/`)
