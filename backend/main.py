@@ -3,9 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from database import engine
 import models
+from migrations import run_migrations
 from routes import characters, admin, health
 
 models.Base.metadata.create_all(bind=engine)
+run_migrations()
 
 app = FastAPI(title="Builder Studio API", version="1.0.0")
 
