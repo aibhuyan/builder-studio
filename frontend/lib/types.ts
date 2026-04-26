@@ -17,7 +17,9 @@ export interface Character {
   backstory: string | null
   portrait_url: string | null
   glb_url: string | null
-  glb_status: string | null
+  glb_status: string
+  glb_task_id: string | null
+  glb_error: string | null
   status: string
   ai_score: number | null
   ai_recommendation: string | null
